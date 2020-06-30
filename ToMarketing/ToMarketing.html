@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ToMarketing</title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170079870-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-170079870-1');
+  </script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="ToMarketing.css">
+  <!--引入js文件-->
+  <!--  <script type="text/javascript" src="account.js"></script>-->
+  <!--引入外部库-->
+  <!--  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>-->
+  <!--  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <script type="text/javascript" src="https://apis.google.com/js/client.js"> </script>
+  <link href="../node_modules/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet">
+
+  <script src="../node_modules/jquery/dist/jquery.js"></script>
+
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+  <script src="https://apis.google.com/js/api.js"></script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../AEManagementAPI.html">首页</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="../account/account.html">账户</a></li>
+        <li><a href="../customDataSource/cnustomDataSource.html">自定义数据源</a></li>
+        <li><a href="../test/test.html">实验</a></li>
+        <li><a href="../filterCondition/filterCondition.html">过滤条件</a></li>
+        <li><a href="../target/target.html">目标</a></li>
+        <li><a href="../ProfileUserAssociation/ProfileUserAssociation.html">配置文件用户关联</a></li>
+        <li><a href="../ToMarketing/ToMarketing.html">再营销受众群体</a></li>
+        <li><a href="../subdivide/subdivide.html">细分</a></li>
+        <li><a href="../NonSamplingReport/NonSamplingReport.html">非抽样报告</a></li>
+        <li><a href="../uploads/uploads.html">uploads</a></li>
+        <li><a href="../dataView/dataview.html">数据视图</a></li>
+        <li><a href="../NetworkMediaResources/NetworkMediaResources.html">网络媒体资源</a></li>
+        <li><a href="../NetworkMediaResourceUserAssociation/NetworkMediaResourceUserAssociation.html">网络媒体资源用户关联</a></li>
+
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <label>
+            <input type="text" class="form-control" placeholder="Search">
+          </label>
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">登录</a></li>
+        <li><a href="#">注册</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">关于GA<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">GA账户</a></li>
+            <li><a href="#">GA参考资料</a></li>
+            <li><a href="#">GA常见问题</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">寻求帮助</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<button onclick="authenticate().then(loadClient)">授权和登录</button>
+
+<!--删除-->
+
+
+<div class="line1">
+  <form class="navbar-form navbar-left"  role="search">
+    <div class="form-group">
+      <span>accountId:</span><label for="deleteAccount"></label><input type="text" class="form-control" placeholder="accountID" id="deleteAccount">
+      <span>remarketingAudienceId:</span><label for="deleteRemarketingAudience"></label><input type="text" class="form-control" placeholder="remarketingAudienceID" id="deleteRemarketingAudience">
+      <span>webPropertyId:</span><label for="deleteWebProperty"></label><input type="text" class="form-control" placeholder="webPropertyId" id="deleteWebProperty">
+    </div>
+    <button type="submit" class="btn btn-default" id="deleteBtn">删除再营销</button>
+  </form>
+</div>
+
+<!--获取-->
+<div class="line5">
+  <form class="navbar-form navbar-left"  role="search">
+    <div class="form-group">
+      <span>accountId:</span><label for="getAccount"></label><input type="text" class="form-control" placeholder="accountID" id="getAccount">
+      <span>remarketingAudienceId:</span><label for="getRemarketingAudience"></label><input type="text" class="form-control" placeholder="remarketingAudienceID" id="getRemarketingAudience">
+      <span>webPropertyId:</span><label for="getWebProperty"></label><input type="text" class="form-control" placeholder="webPropertyId" id="getWebProperty">
+
+    </div>
+    <button type="submit" class="btn btn-default" id="getBtn">获取再营销</button>
+  </form>
+</div>
+
+<!--插入-->
+<div class="home1">
+  <div class="line2">
+    <form class="navbar-form navbar-left" role="search" >
+      <div class="form-group">
+        <span>accountId:</span><label for="insertAccount"></label><input type="text" class="form-control" placeholder="accountID" id="insertAccount">
+        <span>webPropertyId:</span><label for="insertWebProperty"></label><input type="text" class="form-control" placeholder="webPropertyId" id="insertWebProperty">
+      </div>
+      <button type="submit" class="btn btn-default" id="insertBtn">插入再营销</button>
+    </form>
+  </div>
+
+  <!--列表-->
+
+  <div class="line7">
+    <form class="navbar-form navbar-left"  role="search">
+      <div class="form-group">
+        <span>accountId:</span><label for="listAccount"></label><input type="text" class="form-control" placeholder="accountID" id="listAccount">
+        <span>webPropertyId:</span><label for="listWebProperty"></label><input type="text" class="form-control" placeholder="webPropertyId" id="listWebProperty">
+      </div>
+      <button type="submit" class="btn btn-default" id="listBtn">读取再营销列表</button>
+    </form>
+  </div>
+
+  <!--  修正-->
+
+  <div class="line6">
+    <form class="navbar-form navbar-left"  role="search">
+      <div class="form-group">
+        <span>accountId:</span><label for="patchAccount"></label><input type="text" class="form-control" placeholder="accountID" id="patchAccount">
+        <span>remarketingAudienceId:</span><label for="patchRemarketingAudience"></label><input type="text" class="form-control" placeholder="remarketingAudienceID" id="patchRemarketingAudience">
+        <span>webPropertyId:</span><label for="patchWebProperty"></label><input type="text" class="form-control" placeholder="webPropertyId" id="patchWebProperty">
+
+      </div>
+      <button type="submit" class="btn btn-default" id="patchBtn">修正再营销</button>
+    </form>
+  </div
+
+      <!--更新-->
+  <div class="line3">
+    <form class="navbar-form navbar-left" role="search" id="line3">
+      <div class="form-group">
+        <span>accountId:</span><label for="updateAccount"></label><input type="text" class="form-control" placeholder="accountID" id="updateAccount">
+        <span>remarketingAudienceId:</span><label for="updateRemarketingAudience"></label><input type="text" class="form-control" placeholder="remarketingAudienceID" id="updateRemarketingAudience">
+        <span>webPropertyId:</span><label for="updateWebProperty"></label><input type="text" class="form-control" placeholder="webPropertyId" id="updateWebProperty">
+      </div>
+      <button type="submit" class="btn btn-default" id="updateBtn">更新再营销</button>
+    </form>
+  </div>
+</div>
+
+
+<script>
+  /**
+   * Sample JavaScript code for analytics.management.uploads.list
+   * See instructions for running APIs Explorer code samples locally:
+   * https://developers.google.com/explorer-help/guides/code_samples#javascript
+   */
+
+  function authenticate() {
+    return gapi.auth2.getAuthInstance()
+      .signIn({scope: "https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.edit https://www.googleapis.com/auth/analytics.readonly"})
+      .then(function() { console.log("Sign-in successful"); },
+        function(err) { console.error("Error signing in", err); });
+  }
+  function loadClient() {
+    gapi.client.setApiKey("AIzaSyAjZD1FxUocOEGADxxNVorrJuk3uPHVD8A");
+    return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/analytics/v3/rest")
+      .then(function() { console.log("GAPI client loaded for API"); },
+        function(err) { console.error("Error loading GAPI client for API", err); });
+  }
+
+  // Make sure the client is loaded and sign-in is complete before calling this method.
+  function execute() {
+    const accountID = document.getElementById('deleteAccount').value;
+
+    const webPropertyId = document.getElementById("deleteWebProperty").value;
+    const customDataSourceId = document.getElementById('deleteCustomDataSourceId').value;
+    return gapi.client.analytics.management.uploads.list({
+    })
+
+      .then(function(response) {
+          // Handle the results here (response.result has the parsed body).
+          console.log("Response", response);
+        },
+        function(err) { console.error("Execute error", err); });
+
+  }
+  gapi.load("client:auth2", function() {
+    gapi.auth2.init({client_id: "7544542021-39d5r4jshfibkr85c05mc11m4fad9vvd.apps.googleusercontent.com"});
+  });
+
+
+</script>
+
+<script>
+
+
+
+
+  // 删除再营销
+  /*
+   * Note: This code assumes you have an authorized Analytics client object.
+   * See the User Permissions Developer Guide for details.
+   */
+
+  /*
+   * This request deletes an existing Account User Link.
+   */
+
+
+
+
+
+  document.getElementById('deleteBtn').addEventListener("click", function deleteAccountUserLink() {
+    if (confirm("是否确定删除再营销？")){
+
+      /**
+       * Note: This code assumes you have an authorized Analytics client object.
+       * See the Unsampled Reports Developer Guide for details.
+       */
+
+      /**
+       * This request deletes an existing Remarketing Audience.
+       */
+      const accountID = document.getElementById('deleteAccount').value;
+      const remarketingAudienceId = document.getElementById('deleteRemarketingAudience').value;
+      const webPropertyId = document.getElementById("deleteWebProperty").value;
+
+      function deleteRemarketingAudience(accountID, webPropertyId, remarketingAudienceId) {
+        let request = gapi.client.analytics.management.remarketingAudience.delete(
+          {
+            'accountId': accountID,
+            'webPropertyId': webPropertyId,
+            'remarketingAudienceId': remarketingAudienceId
+          });
+        request.execute(function (response) { /* Handle the response. */ });
+      }
+
+      }});
+
+  // 获取在营销
+
+
+  document.getElementById('getBtn').addEventListener("click", function deleteAccountUserLink() {
+    if (confirm("是否确定获取再营销？")){
+      /**
+       * Note: This code assumes you have an authorized Analytics client object.
+       * See the Unsampled Reports Developer Guide for details.
+       */
+
+      /**
+       * This request gets an existing Remarketing Audience.
+       */
+      const accountID6 = document.getElementById('getAccount').value;
+      const webPropertyId6 = document.getElementById("getWebProperty").value;
+      const remarketingAudienceId = document.getElementById('getRemarketingAudience').value;
+      function getRemarketingAudience(accountID6, webPropertyId6, remarketingAudienceId) {
+        let request = gapi.client.analytics.management.remarketingAudience.get(
+          {
+            'accountId': accountId,
+            'webPropertyId': webPropertyId6,
+            'remarketingAudienceId': remarketingAudienceId
+          });
+        request.execute(function (response) { /* Handle the response. */
+        });
+
+
+      }}});
+
+  // 插入再营销
+
+
+
+  document.getElementById('insertBtn').addEventListener("click", function insertAccountUserLink() {
+    if (confirm("是否确认插入再营销？")){
+
+      /**
+       * Note: This code assumes you have an authorized Analytics client object.
+       * See the Unsampled Reports Developer Guide for details.
+       */
+
+      /**
+       * This request creates a new STATE_BASED Remarketing Audience.
+       */
+      const accountID2 = document.getElementById('insertAccount').value;
+      const webPropertyId2 = document.getElementById("insertWebProperty").value;
+      function insertRemarketingAudience(accountID2, webPropertyId2) {
+        let request = gapi.client.analytics.management.remarketingAudience.insert(
+          {
+            'accountId': accountID2,
+            'webPropertyId': webPropertyId2,
+            'resource': {
+              'name': 'State Based Audience',
+              'linkedViews': [viewId],
+              'linkedAdAccounts': [{
+                'type': 'ADWORDS_LINKS',
+                'linkedAccountId': linkedAccountId
+              }],
+              'audienceType': 'STATE_BASED',
+              'stateBasedAudienceDefinition': {
+                'includeConditions': {
+                  'daysToLookBack': 30,
+                  'segment': 'users::condition::ga:browser==Chrome',
+                  'membershipDurationDays': 30,
+                  'isSmartList': False
+                },
+                'excludeConditions': {
+                  'exclusionDuration': 'PERMANENT',
+                  'segment': 'sessions::condition::ga:city==London'
+                }
+              }
+            }
+          });
+        request.execute(function (response) { /* Handle the response. */ });
+      }
+
+// This request creates a new SIMPLE Remarketing Audience.
+      function insertSIMPLEAudience(accountID2, webPropertyId2) {
+        let request = gapi.client.analytics.management.remarketingAudience.insert(
+          {
+            'accountId': accountID2,
+            'webPropertyId': webPropertyId2,
+            'resource': {
+              'name': 'Simple Audience',
+              'linkedViews': [viewId],
+              'linkedAdAccounts': [{
+                'type': 'ADWORDS_LINKS',
+                'linkedAccountId': linkedAccountId
+              }],
+              'audienceType': 'SIMPLE',
+              'audienceDefinition': {
+                'includeConditions': {
+                  'isSmartList': False,
+                  'daysToLookBack': 7,
+                  'membershipDurationDays': 30,
+                  'segment': 'users::condition::ga:browser==Chrome'
+                }
+              }
+            }
+          });
+        request.execute(function (response) { // Handle the response. });
+        })
+
+
+
+      }}});
+  // 再营销列表
+  /*
+   * Note: This code assumes you have an authorized Analytics client object.
+   * See the User Permissions Developer Guide for details.
+   */
+
+  /*
+   * Example 1:
+   * Requests a list of all Account User links for the authorized user.
+   */
+
+
+  document.getElementById("listBtn").addEventListener("click", function listAccountUserLinks() {
+    if (confirm("确认读取再营销列表？")){
+
+      /**
+       * Note: This code assumes you have an authorized Analytics client object.
+       * See the Unsampled Reports Developer Guide for details.
+       */
+
+      /**
+       * This request lists existing Remarketing Audiences.
+       */
+      const accountID3 = document.getElementById('listAccount').value;
+      const webPropertyId3 = document.getElementById("listWebProperty").value;
+      function listRemarketingAudiences(accountID3, webPropertyId3) {
+        let request = gapi.client.analytics.management.remarketingAudience.list(
+          {
+            'accountId': accountID3,
+            'webPropertyId': webPropertyId3,
+          }
+        ).then(printResults);
+      }
+
+      /**
+       * The results of the list method are passed as the results object.
+       * The following code shows how to iterate through them.
+       */
+      function printResults(results) {
+        if (results && !results.error) {
+          let audiences = results.items;
+          for (let i = 0, audience; audience = audiences[i]; i++) {
+            console.log('Audience Id ' + audience.id);
+            console.log('Audience name ' + audience.name);
+          }
+          for (let j = 0, view; audience.linkedViews[j]; j++) {
+            console.log('linkedView ' + view);
+          }
+
+          // Get the linked accounts.
+          let linkedAccounts = audience.linkedAdAccounts;
+          for (let j = 0, link; link = linkedAccounts[i]; i++) {
+            console.log('Link type ' + link.type);
+            console.log('Link linkedAccountId ' + link.linkedAccountId);
+          }
+
+          // Get the audience type.
+          let audienceType = audience.type;
+          console.log('Audience type ' + audienceType);
+
+          // Get the audience definition.
+          if (audienceType == 'SIMPLE') {
+            let definition = audience.audienceDefinition;
+
+            // Get the include conditions.
+            let condition = definition.includeConditions;
+            console.log('Condition daysToLookBack ' + condition.daysToLookBack);
+            console.log('Condition membershipDurationDays ' +
+              condition.membershipDurationDays);
+            console.log('Condition segment ' + condition.segment);
+          } else if (audienceType == 'STATE_BASED') {
+            let definition = audience.stateBasedAudienceDefinition;
+
+            // Get the include conditions.
+            let condition = definition.includeConditions;
+            console.log('Condition daysToLookBack ' +
+              condition.daysToLookBack);
+            console.log('Condition membershipDurationDays ' + condition.membershipDurationDays);
+            console.log('Condition segment ' + condition.segment);
+
+            // Get the exclude condition
+            let excludeCondition = definition.excludeConditions;
+            console.log('Condition exclusionDuration ' +
+              excludeCondition.exclusionDuration);
+            console.log('Condition segment ' + excludeCondition.segment);
+          }
+        }
+      }
+
+
+  }})
+
+  // 修正再营销
+
+
+  document.getElementById('patchBtn').addEventListener("click", function insertAccountUserLink() {
+    if (confirm("是否确认修正再营销？")){
+
+      /**
+       * Note: This code assumes you have an authorized Analytics client object.
+       * See the Unsampled Reports Developer Guide for details.
+       */
+
+      /**
+       * This request patches an existing Remarketing Audience.
+       */
+      const accountID4 = document.getElementById('patchAccount').value;
+      const webPropertyId4 = document.getElementById("patchWebProperty").value;
+      const remarketingAudienceId = document.getElementById('patchRemarketingAudience').value;
+      function patchRemarketingAudience(accountID4, webPropertyId4, remarketingAudienceId, viewId) {
+        let request = gapi.client.analytics.management.remarketingAudience.patch(
+          {
+            'accountId': accountID4,
+            'webPropertyId': webPropertyId4,
+            'remarketingAudienceId': remarketingAudienceId,
+            'resource': {
+              'name': 'Patch Simple Audience',
+              'linkedViews': [viewId],
+              'linkedAdAccounts': [{
+                'type': 'ADWORDS_LINKS',
+                'linkedAccountId': '202-867-5309'
+              }],
+              'audienceType': 'SIMPLE',
+              'audienceDefinition': {
+                'includeConditions': {
+                  'isSmartList': False,
+                  'daysToLookBack': 7,
+                  'membershipDurationDays': 30,
+                  'segment': 'users::condition::ga:browser==Chrome'
+                }
+              }
+            }
+          });
+        request.execute(function (response) { /* Handle the response. */ });
+
+
+
+      }}});
+
+  // 更新再营销
+  /*
+   * Note: This code assumes you have an authorized Analytics client object.
+   * See the User Permissions Developer Guide for details.
+   */
+
+  /*
+   * This request updates an existing Account User Link.
+   */
+
+  document.getElementById("updateBtn").addEventListener("click", function updateAccountUserLink() {
+    if (confirm("是否确认更新再营销？")){
+
+      /**
+       * Note: This code assumes you have an authorized Analytics client object.
+       * See the Unsampled Reports Developer Guide for details.
+       */
+
+      /**
+       * This request updates an existing Remarketing Audience.
+       */
+      const accountID5 = document.getElementById('updateAccount').value;
+      const webPropertyId5 = document.getElementById("updateWebProperty").value;
+      const remarketingAudienceId = document.getElementById('updateRemarketingAudience').value;
+      function updateRemarketingAudience(accountID5, webPropertyId5, viewId, remarketingAudienceId) {
+        let request = gapi.client.analytics.management.remarketingAudience.update(
+          {
+            'accountId': accountID5,
+            'webPropertyId': webPropertyId5,
+            'remarketingAudienceId': remarketingAudienceId,
+            'resource': {
+              'name': 'Update Simple Audience',
+              'linkedViews': [viewId],
+              'linkedAdAccounts': [{
+                'type': 'ADWORDS_LINKS',
+                'linkedAccountId': '202-867-5309'
+              }],
+              'audienceType': 'SIMPLE',
+              'audienceDefinition': {
+                'includeConditions': {
+                  'isSmartList': False,
+                  'daysToLookBack': 7,
+                  'membershipDurationDays': 30,
+                  'segment': 'users::condition::ga:browser==Chrome'
+                }
+              }
+            }
+          });
+        request.execute(function (response) { /* handle the response */ });
+
+
+      }}})
+
+</script>
+<script src="https://apis.google.com/js/client.js?onload=authorize"></script>
+</body>
+</html>

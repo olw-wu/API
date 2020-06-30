@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NonSamplingReport</title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170079870-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-170079870-1');
+  </script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="NonSamplingReport.css">
+  <!--引入js文件-->
+  <!--  <script type="text/javascript" src="account.js"></script>-->
+  <!--引入外部库-->
+  <!--  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>-->
+  <!--  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <script type="text/javascript" src="https://apis.google.com/js/client.js"> </script>
+  <link href="../node_modules/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet">
+
+  <script src="../node_modules/jquery/dist/jquery.js"></script>
+
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+  <script src="https://apis.google.com/js/api.js"></script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../AEManagementAPI.html">首页</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="../account/account.html">账户</a></li>
+        <li><a href="../customDataSource/cnustomDataSource.html">自定义数据源</a></li>
+        <li><a href="../test/test.html">实验</a></li>
+        <li><a href="../filterCondition/filterCondition.html">过滤条件</a></li>
+        <li><a href="../target/target.html">目标</a></li>
+        <li><a href="../ProfileUserAssociation/ProfileUserAssociation.html">配置文件用户关联</a></li>
+        <li><a href="../ToMarketing/ToMarketing.html">再营销受众群体</a></li>
+        <li><a href="../subdivide/subdivide.html">细分</a></li>
+        <li><a href="../NonSamplingReport/NonSamplingReport.html">非抽样报告</a></li>
+        <li><a href="../uploads/uploads.html">uploads</a></li>
+        <li><a href="../dataView/dataview.html">数据视图</a></li>
+        <li><a href="../NetworkMediaResources/NetworkMediaResources.html">网络媒体资源</a></li>
+        <li><a href="../NetworkMediaResourceUserAssociation/NetworkMediaResourceUserAssociation.html">网络媒体资源用户关联</a></li>
+
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <label>
+            <input type="text" class="form-control" placeholder="Search">
+          </label>
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">登录</a></li>
+        <li><a href="#">注册</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">关于GA<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">GA账户</a></li>
+            <li><a href="#">GA参考资料</a></li>
+            <li><a href="#">GA常见问题</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">寻求帮助</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<button onclick="authenticate().then(loadClient)">授权和登录</button>
+
+
+<!--删除-->
+<div class="line5">
+  <form class="navbar-form navbar-left"  role="search">
+    <div class="form-group">
+      <span>accountId:</span><label for="deleteAccount"></label><input type="text" class="form-control" placeholder="accountID" id="deleteAccount">
+      <span>profiledId:</span><label for="deleteProfiled"></label><input type="text" class="form-control" placeholder="profiledID" id="deleteProfiled">
+      <span>webPropertyId:</span><label for="deleteWebProperty"></label><input type="text" class="form-control" placeholder="webPropertyId" id="deleteWebProperty">
+      <span>unsampledReportId:</span><label for="deleteUnsampledReport"></label><input type="text" class="form-control" placeholder="goalID" id="deleteUnsampledReport">
+    </div>
+    <button type="submit" class="btn btn-default" id="deleteBtn">删除非抽样报告</button>
+  </form>
+</div>
+
+
+
+<!--获取-->
+<div class="line5">
+  <form class="navbar-form navbar-left"  role="search">
+    <div class="form-group">
+      <span>accountId:</span><label for="getAccount"></label><input type="text" class="form-control" placeholder="accountID" id="getAccount">
+      <span>profiledId:</span><label for="getProfiled"></label><input type="text" class="form-control" placeholder="profiledID" id="getProfiled">
+      <span>webPropertyId:</span><label for="getWebProperty"></label><input type="text" class="form-control" placeholder="webPropertyId" id="getWebProperty">
+      <span>unsampledReportId:</span><label for="getUnsampledReport"></label><input type="text" class="form-control" placeholder="goalID" id="getUnsampledReport">
+    </div>
+    <button type="submit" class="btn btn-default" id="getBtn">获取非抽样报告</button>
+  </form>
+</div>
+
+<!--插入-->
+<div class="home1">
+  <div class="line2">
+    <form class="navbar-form navbar-left" role="search" >
+      <div class="form-group">
+        <span>accountId:</span><label for="insertAccount"></label><input type="text" class="form-control" placeholder="accountID" id="insertAccount">
+        <span>profiledId:</span><label for="insertProfiled"></label><input type="text" class="form-control" placeholder="profiledID" id="insertProfiled">
+        <span>webPropertyId:</span><label for="insertWebProperty"></label><input type="text" class="form-control" placeholder="webPropertyId" id="insertWebProperty">
+      </div>
+      <button type="submit" class="btn btn-default" id="insertBtn">插入非抽样报告</button>
+    </form>
+  </div>
+
+  <!--列表-->
+
+  <div class="line7">
+    <form class="navbar-form navbar-left"  role="search">
+      <div class="form-group">
+        <span>accountId:</span><label for="listAccount"></label><input type="text" class="form-control" placeholder="accountID" id="listAccount">
+        <span>profiledId:</span><label for="listProfiled"></label><input type="text" class="form-control" placeholder="profiledID" id="listProfiled">
+        <span>webPropertyId:</span><label for="listWebProperty"></label><input type="text" class="form-control" placeholder="webPropertyId" id="listWebProperty">
+      </div>
+      <button type="submit" class="btn btn-default" id="listBtn">读取非抽样报告列表</button>
+    </form>
+  </div>
+
+
+
+
+  <script>
+    /**
+     * Sample JavaScript code for analytics.management.uploads.list
+     * See instructions for running APIs Explorer code samples locally:
+     * https://developers.google.com/explorer-help/guides/code_samples#javascript
+     */
+
+    function authenticate() {
+      return gapi.auth2.getAuthInstance()
+        .signIn({scope: "https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.edit https://www.googleapis.com/auth/analytics.readonly"})
+        .then(function() { console.log("Sign-in successful"); },
+          function(err) { console.error("Error signing in", err); });
+    }
+    function loadClient() {
+      gapi.client.setApiKey("AIzaSyAjZD1FxUocOEGADxxNVorrJuk3uPHVD8A");
+      return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/analytics/v3/rest")
+        .then(function() { console.log("GAPI client loaded for API"); },
+          function(err) { console.error("Error loading GAPI client for API", err); });
+    }
+
+    // Make sure the client is loaded and sign-in is complete before calling this method.
+    function execute() {
+      const accountID = document.getElementById('deleteAccount').value;
+
+      const webPropertyId = document.getElementById("deleteWebProperty").value;
+      const customDataSourceId = document.getElementById('deleteCustomDataSourceId').value;
+      return gapi.client.analytics.management.uploads.list({
+      })
+
+        .then(function(response) {
+            // Handle the results here (response.result has the parsed body).
+            console.log("Response", response);
+          },
+          function(err) { console.error("Execute error", err); });
+
+    }
+    gapi.load("client:auth2", function() {
+      gapi.auth2.init({client_id: "7544542021-39d5r4jshfibkr85c05mc11m4fad9vvd.apps.googleusercontent.com"});
+    });
+
+
+  </script>
+
+<script>
+
+//删除
+
+const accountID = document.getElementById('deleteAccount').value;
+const profileId = document.getElementById('deleteProfiled').value;
+const webPropertyId = document.getElementById("deleteWebProperty").value;
+const unsampledReportId = document.getElementById('deleteUnsampledReport').value;
+document.getElementById('deleteBtn').addEventListener("click", function deleteAccountUserLink() {
+  if (confirm("是否确定删除非抽样报告？")){
+    /*
+     * Note: This code assumes you have an authorized Analytics client object.
+     * See the Unsampled Reports Developer Guide for details.
+     */
+
+    /*
+     * This request deletes an existing unsampled report.
+     */
+    function getUnsampledReport() {
+      var request = gapi.client.analytics.management.unsampledReports.delete({
+        'accountId': accountID,
+        'webPropertyId': webPropertyId,
+        'profileId': profileId,
+        'unsampledReportId': unsampledReportId
+      });
+      request.execute(function (response) { /* Handle the response. */ });
+
+
+
+    }}});
+
+
+
+
+
+
+  // 获取非抽样报告
+
+  const accountID6 = document.getElementById('getAccount').value;
+  const profileId6 = document.getElementById('getProfiled').value;
+  const webPropertyId6 = document.getElementById("getWebProperty").value;
+  const unsampledReportId6 = document.getElementById('getUnsampledReport').value;
+  document.getElementById('getBtn').addEventListener("click", function deleteAccountUserLink() {
+    if (confirm("是否确定获取非抽样报告？")){
+
+      /*
+ * Note: This code assumes you have an authorized Analytics client object.
+ * See the Unsampled Reports Developer Guide for details.
+ */
+
+      /*
+       * This request gets an existing unsampled report.
+       */
+      function getUnsampledReport() {
+        var request = gapi.client.analytics.management.unsampledReports.get({
+          'accountId': accountID6,
+          'webPropertyId': webPropertyId6,
+          'profileId': profileId6,
+          'unsampledReportId': unsampledReportId6
+        });
+        request.execute(function (response) { /* Handle the response. */ });
+
+
+
+      }}});
+
+  // 插入非抽样报告
+
+
+  const accountID2 = document.getElementById('insertAccount').value;
+  const profileId2 = document.getElementById('insertProfiled').value;
+  const webPropertyId2 = document.getElementById("insertWebProperty").value;
+  document.getElementById('insertBtn').addEventListener("click", function insertAccountUserLink() {
+    if (confirm("是否确认插入非抽样报告？")){
+
+      /*
+  * Note: This code assumes you have an authorized Analytics client object.
+  * See the Unsampled Reports Developer Guide for details.
+  */
+
+      /*
+       * This request creates an new unsampled report.
+       */
+      function insertView() {
+        var request = gapi.client.analytics.management.unsampledReports.insert(
+          {
+            'accountId': accountID2,
+            'webPropertyId': webPropertyId2,
+            'profileId': profileId2,
+            'resource': {
+              'title': 'A test Report',
+              'start-date': '2013-01-01',
+              'end-date': '2013-01-31',
+              'metrics': 'ga:pageviews,ga:bounces',
+              'dimensions': 'ga:browser',
+              'filters': 'ga:bounces>=100',
+              'segment': 'gaid::-1'
+            }
+          });
+        request.execute(function (response) { /* Handle the response. */ });
+
+
+
+
+      }}});
+  // 非抽样报告列表
+  /*
+   * Note: This code assumes you have an authorized Analytics client object.
+   * See the User Permissions Developer Guide for details.
+   */
+
+  /*
+   * Example 1:
+   * Requests a list of all Account User links for the authorized user.
+   */
+
+  const accountID3 = document.getElementById('listAccount').value;
+  const profileId3 = document.getElementById('listProfiled').value;
+  const webPropertyId3 = document.getElementById("listWebProperty").value;
+  document.getElementById("listBtn").addEventListener("click", function listAccountUserLinks() {
+    if (confirm("确认读取非抽样报告列表？")){
+
+      /*
+ * Note: This code assumes you have an authorized Analytics client object.
+ * See the Unsampled Reports Developer Guide for details.
+ */
+
+      /*
+       * Example 1:
+       * Requests a list of all unsampled reports for the authorized user.
+       */
+      function listUnsampledReports() {
+        var request = gapi.client.analytics.management.unsampledReports.list({
+          'accountId': '123456',
+          'webPropertyId': 'UA-123456-1',
+          'profileId': '7654321'
+        });
+        request.execute(printViews);
+      }
+
+      /*
+       * Example 2:
+       * The results of the list method are passed as the results object.
+       * The following code shows how to iterate through them.
+       */
+      function printUnsampledReports(results) {
+        if (results && !results.error) {
+          var reports = results.items;
+          for (var i = 0, report; report = reports[i]; i++) {
+            console.log('Account Id: ' + report.accountId);
+            console.log('Property Id: ' + report.webPropertyId);
+            console.log('Report Id: ' + report.id);
+            console.log('Report Title: ' + report.title);
+            console.log('Report Kind: ' + report.kind);
+            console.log('Report start-date:' + report.start-date);
+            console.log('Report end-date:' + report.end-date);
+            console.log('Report metrics: ' + report.metrics);
+            console.log('Report dimensions:' + report.dimensions);
+            console.log('Report filters: ' + report.filters);
+            console.log('Report Status: ' + report.status);
+            console.log('Report downloadType: ' + report.downloadType);
+
+            // Drive document details.
+            if (report.driveDownloadDetails) {
+              var details = report.driveDownloadDetails;
+              console.log('Drive doc id: ' + details.documentId);
+            }
+
+            // Cloud storage download details.
+            if (report.cloudStorageDownloadDetails) {
+              var details = report.cloudStorageDownloadDetails;
+              console.log('Cloud bucket id: ' + details.bucketId);
+              console.log('Cloud object id: ' + details.objectId);
+            }
+
+            console.log('Report Created: ' + report.created);
+            console.log('Report Updated: ' + report.updated);
+          }
+        }
+      }
+
+    }});
+
+
+
+</script>
+<script src="https://apis.google.com/js/client.js?onload=authorize"></script>
+</body>
+</html>

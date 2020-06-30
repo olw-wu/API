@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>account</title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170079870-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-170079870-1');
+  </script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="account.css">
+  <!--引入js文件-->
+  <!--  <script type="text/javascript" src="account.js"></script>-->
+  <!--引入外部库-->
+  <!--  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>-->
+  <!--  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <script type="text/javascript" src="https://apis.google.com/js/client.js"> </script>
+  <link href="../node_modules/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet">
+
+  <script src="../node_modules/jquery/dist/jquery.js"></script>
+
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+  <script src="https://apis.google.com/js/api.js"></script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../AEManagementAPI.html">首页</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="../account/account.html">账户</a></li>
+        <li><a href="../customDataSource/cnustomDataSource.html">自定义数据源</a></li>
+        <li><a href="../test/test.html">实验</a></li>
+        <li><a href="../filterCondition/filterCondition.html">过滤条件</a></li>
+        <li><a href="../target/target.html">目标</a></li>
+        <li><a href="../ProfileUserAssociation/ProfileUserAssociation.html">配置文件用户关联</a></li>
+        <li><a href="../ToMarketing/ToMarketing.html">再营销受众群体</a></li>
+        <li><a href="../subdivide/subdivide.html">细分</a></li>
+        <li><a href="../NonSamplingReport/NonSamplingReport.html">非抽样报告</a></li>
+        <li><a href="../uploads/uploads.html">uploads</a></li>
+        <li><a href="../dataView/dataview.html">数据视图</a></li>
+        <li><a href="../NetworkMediaResources/NetworkMediaResources.html">网络媒体资源</a></li>
+        <li><a href="../NetworkMediaResourceUserAssociation/NetworkMediaResourceUserAssociation.html">网络媒体资源用户关联</a></li>
+
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <label>
+            <input type="text" class="form-control" placeholder="Search">
+          </label>
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">登录</a></li>
+        <li><a href="#">注册</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">关于GA<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">GA账户</a></li>
+            <li><a href="#">GA参考资料</a></li>
+            <li><a href="#">GA常见问题</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">寻求帮助</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<button onclick="authenticate().then(loadClient)">授权和登录</button>
+
+<!--删除-->
+
+
+<div class="btn-group" role="group" aria-label="...">
+  <button type="button" class="btn btn-default" id="deleteNew" >自定义数据源List</button>
+
+</div>
+
+
+
+
+
+<script>
+  /**
+   * Sample JavaScript code for analytics.management.uploads.list
+   * See instructions for running APIs Explorer code samples locally:
+   * https://developers.google.com/explorer-help/guides/code_samples#javascript
+   */
+
+  function authenticate() {
+    return gapi.auth2.getAuthInstance()
+      .signIn({scope: "https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.edit https://www.googleapis.com/auth/analytics.readonly"})
+      .then(function() { console.log("Sign-in successful"); },
+        function(err) { console.error("Error signing in", err); });
+  }
+  function loadClient() {
+    gapi.client.setApiKey("AIzaSyAjZD1FxUocOEGADxxNVorrJuk3uPHVD8A");
+    return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/analytics/v3/rest")
+      .then(function() { console.log("GAPI client loaded for API"); },
+        function(err) { console.error("Error loading GAPI client for API", err); });
+  }
+
+  // Make sure the client is loaded and sign-in is complete before calling this method.
+  function execute() {
+    const accountID = document.getElementById('deleteAccount').value;
+
+    const webPropertyId = document.getElementById("deleteWebProperty").value;
+    const customDataSourceId = document.getElementById('deleteCustomDataSourceId').value;
+    return gapi.client.analytics.management.uploads.list({
+    })
+
+      .then(function(response) {
+          // Handle the results here (response.result has the parsed body).
+          console.log("Response", response);
+        },
+        function(err) { console.error("Execute error", err); });
+
+  }
+  gapi.load("client:auth2", function() {
+    gapi.auth2.init({client_id: "7544542021-39d5r4jshfibkr85c05mc11m4fad9vvd.apps.googleusercontent.com"});
+  });
+
+
+</script>
+
+<script>
+
+  // 列表
+
+  document.getElementById("deleteNew").addEventListener("click", function listAccountUserLinks() {
+    if (confirm("确认读取自定义数据源列表？")){
+      function listCustomDataSources() {
+        var request = gapi.client.analytics.management.customDataSources.list({
+          'accountId': '123456',
+          'webPropertyId': 'UA-123456-1'
+        });
+        request.execute(printCustomDataSources);
+      }
+
+      /*
+       * Example 2:
+       * The results of the list method are passed as the results object.
+       * The following code shows how to iterate through them.
+       */
+      function printCustomDataSources(results) {
+        if (results && !results.error) {
+          var datasets = results.items;
+          for (var i = 0, dataset; dataset = datasets[i]; i++) {
+            console.log('Account Id: ' + dataset.accountId);
+            console.log('Property Id: ' + dataset.webPropertyId);
+            console.log('Dataset Id: ' + dataset.id);
+            console.log('Dataset Kind: ' + dataset.kind);
+            console.log('Dataset Name: ' + dataset.name);
+            console.log('Dataset Description: ' + dataset.description);
+            console.log('Dataset uploadType: ' + dataset.uploadType);
+
+            // Iterate through the linked views (profiles).
+            var profiles = dataset.profilesLinked;
+            if (profiles) {
+              for (var j = 0, profile; profile = profiles[j]; j++) {
+                console.log('Linked view (profile) Id: ' + profile);
+              }
+            }
+          }
+        }
+      }
+
+    }});
+</script>
+<script src="https://apis.google.com/js/client.js?onload=authorize"></script>
+</body>
+</html>

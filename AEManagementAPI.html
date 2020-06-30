@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AE management API </title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170079870-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-170079870-1');
+  </script>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <!--引入库文件-->
+  <script type="text/javascript" src="https://apis.google.com/js/client.js"> </script>
+
+  <link href="node_modules/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet">
+
+  <script src="node_modules/jquery/dist/jquery.js"></script>
+
+  <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+  <!--引入文件包-->
+  <script src="https://apis.google.com/js/client.js?onload=authorize"></script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="AEManagementAPI.html">首页</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="account/account.html">账户</a></li>
+        <li><a href="customDataSource/cnustomDataSource.html">自定义数据源</a></li>
+        <li><a href="test/test.html">实验</a></li>
+        <li><a href="filterCondition/filterCondition.html">过滤条件</a></li>
+        <li><a href="target/target.html">目标</a></li>
+        <li><a href="ProfileUserAssociation/ProfileUserAssociation.html">配置文件用户关联</a></li>
+        <li><a href="ToMarketing/ToMarketing.html">再营销受众群体</a></li>
+        <li><a href="subdivide/subdivide.html">细分</a></li>
+        <li><a href="NonSamplingReport/NonSamplingReport.html">非抽样报告</a></li>
+        <li><a href="uploads/uploads.html">uploads</a></li>
+        <li><a href="dataView/dataview.html">数据视图</a></li>
+        <li><a href="NetworkMediaResources/NetworkMediaResources.html">网络媒体资源</a></li>
+        <li><a href="NetworkMediaResourceUserAssociation/NetworkMediaResourceUserAssociation.html">网络媒体资源用户关联</a></li>
+
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">登录</a></li>
+        <li><a href="#">注册</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">关于GA<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">GA账户</a></li>
+            <li><a href="#">GA参考资料</a></li>
+            <li><a href="#">GA常见问题</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">寻求帮助</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="home">
+<button id="auth-button">授权</button>
+<div class="title"><h1>AE management API</h1></div>
+<textarea cols="120" rows="40" id="query-output"></textarea>
+</div>
+<script>
+
+  // Replace with your client ID from the developer console.
+  var CLIENT_ID = '7544542021-39d5r4jshfibkr85c05mc11m4fad9vvd.apps.googleusercontent.com';
+
+  // Set authorized scope.
+  var SCOPES = ['https://www.googleapis.com/auth/analytics.readonly'];
+
+
+  function authorize(event) {
+    // Handles the authorization flow.
+    // `immediate` should be false when invoked from the button click.
+    var useImmdiate = event ? false : true;
+    var authData = {
+      client_id: CLIENT_ID,
+      scope: SCOPES,
+      immediate: useImmdiate
+    };
+
+    gapi.auth.authorize(authData, function(response) {
+      var authButton = document.getElementById('auth-button');
+      if (response.error) {
+        authButton.hidden = false;
+      }
+      else {
+        authButton.hidden = true;
+        queryAccounts();
+      }
+    });
+  }
+
+
+  function queryAccounts() {
+    // Load the Google Analytics client library.
+    gapi.client.load('analytics', 'v3').then(function() {
+
+      // Get a list of all Google Analytics accounts for this user
+      gapi.client.analytics.management.accounts.list().then(handleAccounts);
+    });
+  }
+
+
+  function handleAccounts(response) {
+    // Handles the response from the accounts list method.
+    if (response.result.items && response.result.items.length) {
+      // Get the first Google Analytics account.
+      var firstAccountId = response.result.items[0].id;
+
+      // Query for properties.
+      queryProperties(firstAccountId);
+    } else {
+      console.log('No accounts found for this user.');
+    }
+  }
+
+
+  function queryProperties(accountId) {
+    // Get a list of all the properties for the account.
+    gapi.client.analytics.management.webproperties.list(
+      {'accountId': accountId})
+      .then(handleProperties)
+      .then(null, function(err) {
+        // Log any errors.
+        console.log(err);
+      });
+  }
+
+
+  function handleProperties(response) {
+    // Handles the response from the webproperties list method.
+    if (response.result.items && response.result.items.length) {
+
+      // Get the first Google Analytics account
+      var firstAccountId = response.result.items[0].accountId;
+
+      // Get the first property ID
+      var firstPropertyId = response.result.items[0].id;
+
+      // Query for Views (Profiles).
+      queryProfiles(firstAccountId, firstPropertyId);
+    } else {
+      console.log('No properties found for this user.');
+    }
+  }
+
+
+  function queryProfiles(accountId, propertyId) {
+    // Get a list of all Views (Profiles) for the first property
+    // of the first Account.
+    gapi.client.analytics.management.profiles.list({
+      'accountId': accountId,
+      'webPropertyId': propertyId
+    })
+      .then(handleProfiles)
+      .then(null, function(err) {
+        // Log any errors.
+        console.log(err);
+      });
+  }
+
+
+  function handleProfiles(response) {
+    // Handles the response from the profiles list method.
+    if (response.result.items && response.result.items.length) {
+      // Get the first View (Profile) ID.
+      var firstProfileId = response.result.items[0].id;
+
+      // Query the Core Reporting API.
+      queryCoreReportingApi(firstProfileId);
+    } else {
+      console.log('No views (profiles) found for this user.');
+    }
+  }
+
+
+  function queryCoreReportingApi(profileId) {
+    // Query the Core Reporting API for the number sessions for
+    // the past seven days.
+    gapi.client.analytics.data.ga.get({
+      'ids': 'ga:' + profileId,
+      'start-date': '7daysAgo',
+      'end-date': 'today',
+      'metrics': 'ga:sessions'
+    })
+      .then(function (response) {
+        var FormattedJson = JSON.stringify(response.result, null, 2);
+        document.getElementById('query-output').value = FormattedJson;
+      })
+      .then(null, function (err) {
+        // Log any errors.
+        console.log(err);
+      })
+  }
+
+  // Add an event listener to the 'auth-button'.
+  document.getElementById('auth-button').addEventListener('click', authorize);
+</script>
+
+
+</body>
+</html>

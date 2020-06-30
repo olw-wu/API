@@ -1,0 +1,26 @@
+.line1{
+ width: 100%;
+
+}
+.line2{
+  width: 100%;
+
+  margin: 0 auto;
+}
+.line3{
+  width: 100%;
+
+  margin: 0 auto;
+}
+.btn-group{
+
+  margin: 10px 600px ;
+}
+ .home1{
+   margin: 0 100px;
+ }
+ .title{
+   position: absolute;
+   left: 400px;
+   top: 260px;
+ }

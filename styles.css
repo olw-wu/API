@@ -1,0 +1,11 @@
+ .home{
+   position: absolute;
+   left: 500px;
+
+ }
+ .home .title{
+   margin: 0 auto;
+ }
+.home .title h1{
+  text-align: center;
+}
